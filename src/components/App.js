@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 
 import Header from './App_header';
 import Modal_Form from './App_modal_form';
