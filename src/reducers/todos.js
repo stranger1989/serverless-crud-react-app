@@ -1,13 +1,13 @@
+import _ from 'lodash'
 import {
     READ_TODOS,
 } from '../actions'
 
-export default ( state = {}, action) => {
+export default ( todos = {}, action) => {
     switch (action.type) {
         case READ_TODOS:
-            console.log(action.response.data);
-            return state
+            return _.mapKeys(action.response.data, 'id')
         default:
-            return state
+            return todos
     }
 }
