@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { compose } from "redux";
+import _ from 'lodash'
+
+import { readTodos } from '../actions'
 
 import Header from './App_header';
 import Modal_Form from './App_modal_form';
@@ -34,6 +39,45 @@ class App extends Component {
     spacing: '16',
   };
 
+  componentDidMount() {
+    this.props.readTodos()
+  }
+
+  renderTodos(){
+    const { classes } = this.props;
+
+    return _.map(this.props.todos, todo =>(
+        <Grid key={todo.id} item>
+          <Card className={classes.card}>
+            <CardActionArea>
+              <CardMedia
+                  className={classes.media}
+                  image="bg1.jpg"
+                  title="Contemplative Reptile"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                  { todo.text }
+                </Typography>
+                <Typography component="p">
+                  { todo.id }<br />
+                  { todo.updatedAt }
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary">
+                Edit
+              </Button>
+              <Button size="small" color="primary">
+                Delete
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+    ))
+  }
+
   render() {
     const { classes } = this.props;
     const { spacing } = this.state;
@@ -46,36 +90,7 @@ class App extends Component {
             <Grid container className={classes.root} spacing={16}>
               <Grid item xs={12}>
                 <Grid container className={classes.demo} justify="center" spacing={Number(spacing)}>
-                  {[0, 1, 2, 3, 4, 5].map(value => (
-                      <Grid key={value} item>
-                        <Card className={classes.card}>
-                          <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="bg1.jpg"
-                                title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                              <Typography gutterBottom variant="h5" component="h2">
-                                テストTodo
-                              </Typography>
-                              <Typography component="p">
-                                テストTodoです<br />
-                                このデザインはMaterial-uiを使用しています
-                              </Typography>
-                            </CardContent>
-                          </CardActionArea>
-                          <CardActions>
-                            <Button size="small" color="primary">
-                              Edit
-                            </Button>
-                            <Button size="small" color="primary">
-                              Delete
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                  ))}
+                  { this.renderTodos() }
                 </Grid>
               </Grid>
             </Grid>
@@ -89,4 +104,10 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+const mapStateToProps = state => ({ todos: state.todos })
+const mapDispatchToProps = ({ readTodos })
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps),
+)(App);
