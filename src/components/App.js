@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { compose } from "redux";
+
+import { readTodos } from '../actions'
 
 import Header from './App_header';
 import Modal_Form from './App_modal_form';
@@ -33,6 +37,10 @@ class App extends Component {
   state = {
     spacing: '16',
   };
+
+  componentDidMount() {
+    this.props.readTodos()
+  }
 
   render() {
     const { classes } = this.props;
@@ -89,4 +97,10 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(App);
+const mapStateToProps = state => ({})
+const mapDispatchToProps = ({ readTodos })
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps),
+)(App);
