@@ -69,8 +69,7 @@ class FormDialog extends React.Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const { handleSubmit } = this.props;
+        const { classes, handleSubmit, pristine, submitting  } = this.props;
 
         return (
             <div className={classes.root}>
@@ -129,7 +128,7 @@ class FormDialog extends React.Component {
                             キャンセル
                         </Button>
                         <Button onClick={this.handleClose} color="primary">
-                            <input type="submit" value="送信" disabled={false} />
+                            <input type="submit" value="送信" disabled={ pristine || submitting } />
                         </Button>
                     </DialogActions>
                 </Form>
