@@ -8,7 +8,7 @@ const dynamoDb = new AWS.DynamoDB.DocumentClient();
 module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
-  if (typeof data.text !== 'string') {
+  if (typeof data.title !== 'string' && typeof data.memo !== 'string') {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
@@ -22,8 +22,8 @@ module.exports.create = (event, context, callback) => {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
       id: uuid.v1(),
-      text: data.text,
-      checked: false,
+      title: data.title,
+      memo: data.memo,
       createdAt: timestamp,
       updatedAt: timestamp,
     },
@@ -45,6 +45,9 @@ module.exports.create = (event, context, callback) => {
     // create a response
     const response = {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*"
+      },
       body: JSON.stringify(params.Item),
     };
     callback(null, response);
