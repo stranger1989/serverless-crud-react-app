@@ -24,7 +24,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   card: {
-    maxWidth: 345,
+    width: 300,
   },
   media: {
     height: 140,
@@ -57,10 +57,10 @@ class App extends Component {
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  { todo.text }
+                  { todo.title }
                 </Typography>
                 <Typography component="p">
-                  { todo.id }<br />
+                  { todo.memo }<br />
                   { todo.updatedAt }
                 </Typography>
               </CardContent>
