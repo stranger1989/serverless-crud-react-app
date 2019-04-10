@@ -13,7 +13,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
-import {compose} from "redux";
+import { compose } from "redux";
 import { Form } from "redux-form";
 
 const styles = theme => ({
@@ -45,10 +45,12 @@ class FormDialog extends React.Component {
 
     handleClickOpen = () => {
         this.setState({ open: true });
+        this.props.history.push('/todo/new');
     };
 
     handleClose = () => {
         this.setState({ open: false });
+        this.props.history.push('/');
     };
 
     renderField(field){
@@ -64,12 +66,11 @@ class FormDialog extends React.Component {
 
     async onSubmit(values){
         await this.props.postTodo(values);
-        this.props.history.push('/test');
         this.props.history.push('/');
     }
 
     render() {
-        const { classes, handleSubmit, pristine, submitting  } = this.props;
+        const { classes, handleSubmit, pristine, submitting, invalid  } = this.props;
 
         return (
             <div className={classes.root}>
@@ -82,11 +83,11 @@ class FormDialog extends React.Component {
                     aria-labelledby="form-dialog-title"
                 >
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
-                    <DialogTitle id="form-dialog-title">投稿</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            投稿内容を記述してください！
-                        </DialogContentText>
+                        <DialogTitle id="form-dialog-title">投稿</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                投稿内容を記述してください！
+                            </DialogContentText>
                             <Field
                                 autoFocus
                                 margin="dense"
@@ -106,34 +107,18 @@ class FormDialog extends React.Component {
                                 fullWidth
                                 component={this.renderField}
                             />
-                            {/*<Field*/}
-                            {/*accept="image/*"*/}
-                            {/*className={classes.input}*/}
-                            {/*style={{ display: 'none' }}*/}
-                            {/*id="image"*/}
-                            {/*multiple*/}
-                            {/*label="image"*/}
-                            {/*name="image"*/}
-                            {/*type="file"*/}
-                            {/*component={this.renderField}*/}
-                            {/*/>*/}
-                            {/*<label htmlFor="image">*/}
-                            {/*<Button variant="raised" component="span" className={classes.button}>*/}
-                            {/*Image Upload*/}
-                            {/*</Button>*/}
-                            {/*</label>*/}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            キャンセル
-                        </Button>
-                        <Button onClick={this.handleClose} color="primary">
-                            <input type="submit" value="送信" disabled={ pristine || submitting } />
-                        </Button>
-                    </DialogActions>
-                </Form>
-            </Dialog>
-    </div>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleClose} color="primary">
+                                キャンセル
+                            </Button>
+                            <Button type="submit" onClick={this.handleClose} color="primary" disabled={ pristine || submitting || invalid }>
+                                送信
+                            </Button>
+                        </DialogActions>
+                    </Form>
+                </Dialog>
+            </div>
     );
     }
 }
