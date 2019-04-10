@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { compose } from "redux";
-import _ from 'lodash'
+import _ from 'lodash';
 
 import { readTodos } from '../actions'
 
 import Header from './App_header';
-import Modal_Form from './App_modal_form';
+import Modal_Form from './App_modal_form_create';
+import Modal_Form_Update from './App_modal_form_update';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
@@ -66,12 +66,7 @@ class App extends Component {
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size="small" color="primary">
-                Edit
-              </Button>
-              <Button size="small" color="primary">
-                Delete
-              </Button>
+              <Modal_Form_Update todo={ todo } />
             </CardActions>
           </Card>
         </Grid>
