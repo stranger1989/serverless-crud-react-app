@@ -9,7 +9,7 @@ module.exports.update = (event, context, callback) => {
   const data = JSON.parse(event.body);
 
   // validation
-  if (typeof data.text !== 'string' || typeof data.checked !== 'boolean') {
+  if (typeof data.title !== 'string' && typeof data.memo !== 'string') {
     console.error('Validation Failed');
     callback(null, {
       statusCode: 400,
@@ -25,14 +25,15 @@ module.exports.update = (event, context, callback) => {
       id: event.pathParameters.id,
     },
     ExpressionAttributeNames: {
-      '#todo_text': 'text',
+      '#todo_title': 'title',
+      '#todo_memo': 'memo',
     },
     ExpressionAttributeValues: {
-      ':text': data.text,
-      ':checked': data.checked,
+      ':title': data.title,
+      ':memo': data.memo,
       ':updatedAt': timestamp,
     },
-    UpdateExpression: 'SET #todo_text = :text, checked = :checked, updatedAt = :updatedAt',
+    UpdateExpression: 'SET #todo_title = :title, #todo_memo = :memo, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 
@@ -52,6 +53,9 @@ module.exports.update = (event, context, callback) => {
     // create a response
     const response = {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin" : "*"
+      },
       body: JSON.stringify(result.Attributes),
     };
     callback(null, response);
