@@ -11,7 +11,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+
 import { withStyles } from '@material-ui/core/styles';
+
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { Form } from "redux-form";
@@ -30,6 +33,9 @@ const styles = theme => ({
     },
     control: {
         padding: theme.spacing.unit * 2,
+    },
+    space: {
+        marginTop: 15,
     },
 });
 
@@ -54,13 +60,18 @@ class FormDialog extends React.Component {
     };
 
     renderField(field){
-        const { input, label, type, meta: { touched, error }} = field;
+        const { input, label, type, rootClass, meta: { touched, error }} = field;
 
         return(
-            <div>
-                <input {...input} placeholder={label} type={type} />
-                {touched && error && <span>{error}</span>}
-            </div>
+            <TextField
+                label={label}
+                type={type}
+                error={!!(touched && error)}
+                helperText={touched && error}
+                {...input}
+                fullWidth={true}
+                classes={{root: rootClass}}
+            />
         )
     }
 
@@ -96,6 +107,7 @@ class FormDialog extends React.Component {
                                 name="title"
                                 type="text"
                                 fullWidth
+                                rootClass={classes.space}
                                 component={this.renderField}
                             />
                             <Field
@@ -105,6 +117,7 @@ class FormDialog extends React.Component {
                                 name="memo"
                                 type="text"
                                 fullWidth
+                                rootClass={classes.space}
                                 component={this.renderField}
                             />
                         </DialogContent>

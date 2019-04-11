@@ -29,6 +29,12 @@ const styles = theme => ({
   media: {
     height: 140,
   },
+  small: {
+    color: 'gray',
+    fontSize: '0.8rem',
+    textAlign: 'right',
+    marginTop: '10px',
+  },
   control: {
     padding: theme.spacing.unit * 2,
   },
@@ -42,6 +48,16 @@ class App extends Component {
   componentDidMount() {
     this.props.readTodos()
   }
+
+  unixTime2ymd = (intTime) => {
+    const d = new Date( intTime );
+    const year  = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day  = d.getDate();
+    const hour = ( '0' + d.getHours() ).slice(-2);
+    const min  = ( '0' + d.getMinutes() ).slice(-2);
+    return `${year}-${month}-${day} (${hour}:${min})`
+  };
 
   renderTodos(){
     const { classes } = this.props;
@@ -60,8 +76,10 @@ class App extends Component {
                   { todo.title }
                 </Typography>
                 <Typography component="p">
-                  { todo.memo }<br />
-                  { todo.updatedAt }
+                  { todo.memo }
+                </Typography>
+                <Typography component="small" className={classes.small}>
+                  { `更新: ${this.unixTime2ymd(todo.updatedAt)}` }
                 </Typography>
               </CardContent>
             </CardActionArea>

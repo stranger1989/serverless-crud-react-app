@@ -12,6 +12,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { Form } from "redux-form";
@@ -31,6 +33,9 @@ const styles = theme => ({
     control: {
         padding: theme.spacing.unit * 2,
     },
+    space: {
+        marginTop: 15,
+    },
 });
 
 class FormDialogShow extends React.Component {
@@ -40,6 +45,7 @@ class FormDialogShow extends React.Component {
         this.onUpdateClick = this.onUpdateClick.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onDeleteClick = this.onDeleteClick.bind(this)
+        this.renderField = this.renderField.bind(this)
     }
 
     componentDidMount() {
@@ -66,13 +72,21 @@ class FormDialogShow extends React.Component {
 
 
     renderField(field){
-        const { input, label, type, updateValue, meta: { touched, error }} = field;
+        const { input, label, type, rootClass, updateValue, meta: { touched, error }} = field;
+
+        input.value = updateValue
 
         return(
-            <div>
-                <input {...input} placeholder={label} type={type} value={ updateValue } />
-                {touched && error && <span>{error}</span>}
-            </div>
+            <TextField
+                {...input}
+                label={label}
+                type={type}
+                onChange={ e => this.setState({ [label]: e.target.value })}
+                error={!!(touched && error)}
+                helperText={touched && error}
+                fullWidth={true}
+                classes={{root: rootClass}}
+            />
         )
     }
 
@@ -91,7 +105,7 @@ class FormDialogShow extends React.Component {
     }
 
     render() {
-        const { classes, handleSubmit, pristine, submitting, invalid  } = this.props;
+        const { classes, handleSubmit, pristine, submitting, invalid } = this.props;
 
         return (
             <div className={classes.root}>
@@ -120,8 +134,8 @@ class FormDialogShow extends React.Component {
                                 label="title"
                                 name="title"
                                 type="text"
+                                rootClass={ classes.space }
                                 updateValue={ this.state.title }
-                                onChange={e => this.setState({ title: e.target.value })}
                                 fullWidth
                                 component={this.renderField}
                             />
@@ -131,8 +145,8 @@ class FormDialogShow extends React.Component {
                                 label="memo"
                                 name="memo"
                                 type="text"
+                                rootClass={classes.space}
                                 updateValue={this.state.memo}
-                                onChange={e => this.setState({ memo: e.target.value })}
                                 fullWidth
                                 component={this.renderField}
                             />
