@@ -1,3 +1,5 @@
+# serverless-crud-react-app
+
 ## 環境
 
 ### フロントエンド
@@ -23,6 +25,7 @@
   - CloudFront
   - API Gateway
   - Lambda
+  - S3
 
 ### データベース
 
